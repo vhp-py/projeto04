@@ -11,7 +11,13 @@
             "quantidade": 20,
             "preco_de_custo": 2.5,
             "preco_de_venda": 5.0
+        },
+        {
+            "nome_produto": "Sucrilhos",
+            "quantidade": 45,
+            "preco_de_custo": 10.0,
+            "preco_de_venda": 15.0
         }
     ],
-    "caixa": 47.0
+    "caixa": 122.0
 }

@@ -32,7 +32,7 @@
 #importando as bibliotecas necessárias
 import json
 from pathlib import Path
-
+from openpyxl import Workbook, load_workbook
 # --- 1. CONFIGURAÇÃO INICIAL (GLOBAL) ---
 caminho_arquivo = Path('dados_loja.json')
 dados_loja = {
@@ -57,19 +57,7 @@ else:
 
 
 # --- 3. FUNÇÕES ---
-
-    
          
-def listar_produtos():
-    print("\n--- LISTA DE PRODUTOS ---")
-    # 1. Primeiro pegamos a lista
-    lista = dados_loja['produtos'] 
-    
-    for item in lista:
-        if item['quantidade'] == 0:
-            print(f'Estamos sem estoque de {item['nome_produto']}')
-        print(f"Produto: {item['nome_produto']} | Preço: R$ {item['preco_de_venda']}")
-
 def comprar_produto():
     produto_escolhido = input('Digite o produto que deseja pesquisar: ')
     encontrou = False
@@ -106,11 +94,6 @@ def comprar_produto():
         except ValueError:
             print(f'Erro: Digite apenas numero')
 
-def salvar_dados():
-    """Função auxiliar para salvar sempre que mudarmos algo"""
-    with open(caminho_arquivo, mode='w', encoding='utf-8') as file:
-        json.dump(dados_loja, file, indent=4, ensure_ascii=False)
-
 def cadastrar_produto():
     print('='*50)
     print("\nNOVO CADASTRO\n")
@@ -138,6 +121,57 @@ def cadastrar_produto():
     except ValueError:
         print("Erro: Você digitou letras em campos de números!")
 
+def listar_produtos():
+    print("\n--- LISTA DE PRODUTOS ---")
+    # 1. Primeiro pegamos a lista
+    lista = dados_loja['produtos'] 
+    
+    for item in lista:
+        if item['quantidade'] == 0:
+            print(f'Estamos sem estoque de {item['nome_produto']}')
+            
+        print(f"Produto: {item['nome_produto']} | Preço: R$ {item['preco_de_venda']}")
+
+def salvar_dados():
+    """Função auxiliar para salvar sempre que mudarmos algo"""
+    with open(caminho_arquivo, mode='w', encoding='utf-8') as file:
+        json.dump(dados_loja, file, indent=4, ensure_ascii=False)
+
+def exportar_dados():
+    arquivo_exportado = Workbook()
+    #   Aba de estoque
+    aba_estoque = arquivo_exportado.active
+    aba_estoque.title = 'Estoque'
+
+    aba_estoque.append(['Produto', 'Quantidade', 'Custo Un.', 'Total Investido'])
+    
+    for item in dados_loja['produtos']:
+        total_investido = item['quantidade'] * item['preco_de_custo']
+        
+        aba_estoque.append([
+            item['nome_produto'],
+            item['quantidade'],
+            item['preco_de_custo'],
+            total_investido
+        ])
+    
+    #   Aba de resumos
+    aba_resumo = arquivo_exportado.create_sheet('Resumo Financeiro')
+    
+    aba_resumo.append(['Resumo', 'Valor Total'])
+    aba_resumo.append(['Dinheiro em caixa', dados_loja['caixa']])
+
+    for celula in aba_estoque['D']:
+        if celula.row > 1:
+            celula.number_format = 'R$ #,##0.00' 
+
+    arquivo_exportado.save('relatorio_financeiro.xlsx')
+    print('Relatório Criado com Sucesso')
+
+    
+
+
+
 def main():
     while True: # Loop infinito para o menu não fechar
         print('\n=== PYSTORE MANAGER ===')
@@ -155,12 +189,15 @@ def main():
             print('\n-- ESTOQUE --')
             print('[1] - Cadastrar Produto')
             print('[2] - Listar Produtos')
+            print('[3] - Fechar caixa e Exportar')
             op_estoque = input('Escolha: ')
 
             if op_estoque == '1':
                 cadastrar_produto()
             elif op_estoque == '2':
                 listar_produtos()
+            elif op_estoque == '3':
+                exportar_dados()
         elif opcao == '3':
             print("Saindo do sistema...")
             break
