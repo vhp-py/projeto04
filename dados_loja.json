@@ -1,0 +1,17 @@
+{
+    "produtos": [
+        {
+            "nome_produto": "Maçã",
+            "quantidade": 0,
+            "preco_de_custo": 1.7,
+            "preco_de_venda": 2.2
+        },
+        {
+            "nome_produto": "Banana",
+            "quantidade": 20,
+            "preco_de_custo": 2.5,
+            "preco_de_venda": 5.0
+        }
+    ],
+    "caixa": 47.0
+}
