@@ -1,46 +1,15 @@
-# 📋 Desafio Técnico: PyStore Manager
-# Cenário: Você foi contratado para desenvolver o sistema de gerenciamento de uma loja de varejo. O cliente precisa de uma solução leve, 
-# que rode via terminal, mas que mantenha os dados salvos e gere relatórios compatíveis com o Excel.
-
-# Objetivo Principal: Desenvolver uma aplicação em Python (CLI - Command Line Interface) que gerencie estoque, 
-# realize vendas e exporte dados financeiros.
-
-# 🛠️ Requisitos Técnicos Obrigatórios
-# Linguagem: Python 3.14.2
-
-# Persistência de Dados: Arquivo .json (Não utilizar SQL).
-
-# Bibliotecas Externas Permitidas: Apenas openpyxl (para Excel) e colorama (opcional, para estética).
-# Bibliotecas nativas (os, json, time, datetime) são livres.
-
-# Estrutura: O código deve ser modularizado em funções (ex: adicionar_produto(), realizar_venda()).
-
-# Tratamento de Erros: O sistema não pode fechar sozinho se o usuário digitar letras onde deveria ser números 
-# (try/except).
-
-#               Etapa 1: Estrutura de Dados e Persistência
-
-# O sistema deve iniciar verificando se existe um arquivo chamado dados_loja.json.
-
-# Se existir: Carregar os produtos e o saldo de caixa para a memória.
-
-# Se não existir: Criar o arquivo automaticamente com uma estrutura vazia: {"produtos": [], "caixa": 0.0}.
-
-# Requisito de Salvamento: Toda vez que uma alteração crítica ocorrer (venda ou cadastro), 
-# o arquivo JSON deve ser atualizado imediatamente.
-
 #importando as bibliotecas necessárias
 import json
 from pathlib import Path
 
-# --- 1. CONFIGURAÇÃO INICIAL (GLOBAL) ---
+# --- 1. CONFIGURAÇÃO INICIAL ---
 caminho_arquivo = Path('dados_loja.json')
 dados_loja = {
-    'produtos': [], # Corrigi de 'produto' para 'produtos' (plural é padrão)
+    'produtos': [], 
     'caixa': 0.0,
 }
 
-# --- 2. CARREGAR DADOS (Antes de tudo) ---
+# --- 2. CARREGAR DADOS ---
 if caminho_arquivo.exists():
     try:
         if caminho_arquivo.stat().st_size > 0:
@@ -74,7 +43,7 @@ def comprar_produto():
     produto_escolhido = input('Digite o produto que deseja pesquisar: ')
     encontrou = False
     
-        # Acessa a lista de produtos dentro do dicionário principal
+       
     lista_de_produtos = dados_loja['produtos']
     
     for item in lista_de_produtos:
@@ -116,13 +85,13 @@ def cadastrar_produto():
     print("\nNOVO CADASTRO\n")
     print('='*50)
     try:
-        # Coletar os dados 
+         
         nome = input('Nome do Produto: ')
         qtd = int(input('Digite a quantidade: '))
         custo = float(input('Digite o preço de custo: '))
         venda = float(input('Digite o preço de venda: '))
 
-        # Criar o dicionário
+        
         novo_produto = {
             'nome_produto': nome,
             'quantidade': qtd,
@@ -130,9 +99,9 @@ def cadastrar_produto():
             'preco_de_venda': venda
         }
 
-        # 3º Passo: Adicionar à lista global e salvar
+        
         dados_loja['produtos'].append(novo_produto)
-        salvar_dados() # Chama a função que grava no arquivo
+        salvar_dados() 
         print(f"Produto '{nome}' cadastrado com sucesso!")
 
     except ValueError:
@@ -140,7 +109,7 @@ def cadastrar_produto():
 
 def main():
     while True: # Loop infinito para o menu não fechar
-        print('\n=== PYSTORE MANAGER ===')
+        print('\n STORE MANAGER ')
         print('[1] - Fazer compra')
         print('[2] - Gerenciar Estoque')
         print('[3] - Sair')
