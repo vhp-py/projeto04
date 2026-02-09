@@ -1,4 +1,4 @@
-# 🛒 PyStore Manager
+# 🛒 Store Manager
 
 Desafio técnico: Sistema de gerenciamento de loja via terminal (CLI) com persistência em JSON e exportação para Excel.
 
