@@ -1,13 +1,11 @@
 #importando as bibliotecas necessárias
 import json
 from pathlib import Path
-<<<<<<< HEAD
 from openpyxl import Workbook, load_workbook
-# --- 1. CONFIGURAÇÃO INICIAL (GLOBAL) ---
-=======
 
-# --- 1. CONFIGURAÇÃO INICIAL ---
->>>>>>> e33a89a0fb55d553e525f21f583689e03a7b25b9
+
+
+
 caminho_arquivo = Path('dados_loja.json')
 dados_loja = {
     'produtos': [], 
@@ -30,7 +28,7 @@ else:
         json.dump(dados_loja, file, indent=4, ensure_ascii=False)
 
 
-# --- 3. FUNÇÕES ---
+# ---  FUNÇÕES ---
          
 def comprar_produto():
     produto_escolhido = input('Digite o produto que deseja pesquisar: ')
@@ -97,7 +95,7 @@ def cadastrar_produto():
 
 def listar_produtos():
     print("\n--- LISTA DE PRODUTOS ---")
-    # 1. Primeiro pegamos a lista
+   
     lista = dados_loja['produtos'] 
     
     for item in lista:
